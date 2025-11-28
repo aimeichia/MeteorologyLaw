@@ -10,10 +10,10 @@
         /* Chosen Palette: "Ocean Security & Legal Clarity"
            Background: #F8FAFC (Cool Grey/White)
            Primary Text: #1E293B (Slate 800)
-           Accent 1 (Core/Ocean): #0EA5E9 (Sky 500) - For main headers and core concepts
-           Accent 2 (Alert/Conflict): #F59E0B (Amber 500) - For legislative conflicts/alerts
-           Accent 3 (Safe/Pass): #10B981 (Emerald 500) - For resolutions and consensus
-           Neutral: #94A3B8 (Slate 400) - For secondary text
+           Accent 1 (Core/Ocean): #0EA5E9 (Sky 500)
+           Accent 2 (Alert/Conflict): #F59E0B (Amber 500)
+           Accent 3 (Safe/Pass): #10B981 (Emerald 500)
+           Neutral: #94A3B8 (Slate 400)
         */
         body {
             background-color: #F8FAFC;
@@ -30,14 +30,13 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
 
-        /* Chart Container Styling - Mandatory Requirements */
         .chart-container {
             position: relative;
             width: 100%;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-            height: 300px; /* Base height */
+            height: 300px;
             max-height: 400px;
         }
         @media (min-width: 768px) {
@@ -66,7 +65,6 @@
             border-color: #BAE6FD;
         }
 
-        /* Accordion Styling */
         .accordion-content {
             transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
             max-height: 0;
@@ -74,7 +72,7 @@
             opacity: 0;
         }
         .accordion-content.open {
-            max-height: 500px; /* Arbitrary large height */
+            max-height: 500px;
             opacity: 1;
         }
         .accordion-icon {
@@ -84,48 +82,27 @@
             transform: rotate(180deg);
         }
 
-        /* Process Flow styling */
-        .step-circle {
-            width: 3.5rem;
-            height: 3.5rem;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 10;
-        }
-        .step-line {
-            position: absolute;
-            top: 1.75rem;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background-color: #E2E8F0;
-            z-index: 0;
+        /* Legal Citation Badge */
+        .citation-badge {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background-color: #F1F5F9;
+            color: #64748B;
+            border: 1px solid #E2E8F0;
+            margin-right: 4px;
+            display: inline-block;
+            margin-top: 4px;
         }
     </style>
-    <!-- Application Structure Plan:
-         1. Header: Title and Quick Nav.
-         2. Context Hero: Briefly explains the "Why" (Cable damage affecting earthquake warnings).
-         3. Core Amendments (The "What"): 3 Cards explaining Negligence, Confiscation, Disposal.
-         4. Interactive Conflict Analysis (The "Debate"):
-            - Visual: Doughnut Chart showing the distribution of Legislator concerns.
-            - Interaction: Filter buttons to show specific cards (Penalty, Jurisdiction, etc.).
-            - Content: Comparison of Legislator Proposal vs. MOTC Response.
-         5. Q&A Accordion (The "Details"): A dedicated section for the 9 specific QA points from the report.
-         6. Process Visualization (The "How"): HTML Flowchart for the Confiscation mechanism.
-         7. Footer.
+    <!-- 
+    Updated based on user request for more completeness using provided files.
+    Key Additions:
+    1. Legal Citations: Added specific references (Criminal Code Art 4, 24, Compulsory Enforcement Act Art 64).
+    2. Case Studies: Added the 2021 Sierra Leone tanker case to the Civil Liability section.
+    3. Detailed Arguments: Expanded MOTC responses with logic from the "Assessment Report" and "Analysis Opinion Table".
+    4. Nuance: Added the detail about "High Temperature" being accepted in Art 2, while Net Zero was rejected.
     -->
-    <!-- Visualization & Content Choices:
-         - Chart.js for Proposal Categories: Helps users see where the main friction points are in the legislation.
-         - Cards for Amendments: Clean, digestible chunks of legal text.
-         - Accordion for Q&A: Efficiently packs detailed Q&A content without cluttering the page.
-         - HTML Flowchart: Visualizes the complex "Confiscation -> Disposal" administrative process.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
 <body class="antialiased min-h-screen flex flex-col">
 
@@ -135,7 +112,7 @@
             <div class="flex items-center gap-2">
                 <span class="text-2xl">📡</span>
                 <h1 class="text-lg sm:text-xl font-bold tracking-tight text-slate-800">
-                    氣象法修正案 <span class="text-sky-500">互動研析</span>
+                    氣象法修正案 <span class="text-sky-500">互動研析報告</span>
                 </h1>
             </div>
             <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
@@ -152,14 +129,14 @@
         <!-- Hero Section -->
         <section class="text-center max-w-4xl mx-auto pt-4">
             <div class="inline-block bg-sky-50 text-sky-700 text-xs font-bold px-3 py-1 rounded-full mb-4 border border-sky-100">
-                關鍵基礎設施防護
+                關鍵基礎設施防護｜第 21 條之 1 修正
             </div>
             <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">
                 守護深海神經網絡
             </h2>
-            <p class="text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
-                針對近年違法抽砂船與權宜輪頻繁損壞海纜，嚴重影響<strong>地震與海嘯預警</strong>時效。<br>
-                本次修法建立「過失刑責」與「絕對沒收」機制，填補法律漏洞。
+            <p class="text-lg text-slate-600 leading-relaxed max-w-3xl mx-auto">
+                針對近年違法抽砂船、漁船與權宜輪頻繁損壞海纜，嚴重影響<strong>地震與海嘯預警</strong>時效。<br>
+                本次修法參酌《電信管理法》與《土石採取法》，建立「過失刑責」與「絕對沒收」機制，填補法律漏洞。
             </p>
         </section>
 
@@ -176,11 +153,14 @@
                     <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">⚠️</div>
                     <h4 class="text-lg font-bold text-slate-800 mb-2 z-10">1. 新增過失罰則</h4>
                     <p class="text-sm text-slate-500 mb-4 flex-grow z-10">
-                        海纜圖資已公開，航行者有義務預知。針對非故意但造成損害的「過失」行為增訂刑責。
+                        海纜圖資已於海委會平台公開，航行者有義務預知。針對非故意但造成損害的「過失」行為增訂刑責。
                     </p>
-                    <div class="bg-sky-50 p-3 rounded-xl border border-sky-100 z-10">
-                        <span class="text-xs font-bold text-sky-600 uppercase">罰則內容</span>
-                        <p class="text-sm font-medium text-sky-900 mt-1">6月以下有期徒刑、拘役<br>或科 200 萬元以下罰金</p>
+                    <div class="mt-auto z-10">
+                        <span class="citation-badge">參酌：電信管理法§72-4</span>
+                        <div class="bg-sky-50 p-3 rounded-xl border border-sky-100 mt-2">
+                            <span class="text-xs font-bold text-sky-600 uppercase">罰則內容</span>
+                            <p class="text-sm font-medium text-sky-900 mt-1">6月以下有期徒刑、拘役<br>或科 200 萬元以下罰金</p>
+                        </div>
                     </div>
                 </div>
 
@@ -189,11 +169,15 @@
                     <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">🚢</div>
                     <h4 class="text-lg font-bold text-slate-800 mb-2 z-10">2. 絕對沒收條款</h4>
                     <p class="text-sm text-slate-500 mb-4 flex-grow z-10">
-                        破解「權宜輪」或借名登記困境。只要是供犯罪使用之工具，不論船主是誰，一律沒收。
+                        破解「權宜輪」或借名登記困境。只要是供犯罪使用之工具（船舶/機械），不論船主是誰，一律沒收。
                     </p>
-                    <div class="bg-amber-50 p-3 rounded-xl border border-amber-100 z-10">
-                        <span class="text-xs font-bold text-amber-600 uppercase">關鍵條文</span>
-                        <p class="text-sm font-medium text-amber-900 mt-1">「不問屬於犯罪行為人與否」<br>均沒收之</p>
+                    <div class="mt-auto z-10">
+                        <span class="citation-badge">參酌：土石採取法§36-3</span>
+                        <span class="citation-badge">參酌：專屬經濟海域法§18-3</span>
+                        <div class="bg-amber-50 p-3 rounded-xl border border-amber-100 mt-2">
+                            <span class="text-xs font-bold text-amber-600 uppercase">關鍵條文</span>
+                            <p class="text-sm font-medium text-amber-900 mt-1">「不問屬於犯罪行為人與否」<br>均沒收之</p>
+                        </div>
                     </div>
                 </div>
 
@@ -202,11 +186,14 @@
                     <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">🔨</div>
                     <h4 class="text-lg font-bold text-slate-800 mb-2 z-10">3. 彈性處置機制</h4>
                     <p class="text-sm text-slate-500 mb-4 flex-grow z-10">
-                        解決大型船舶保管困難或拍賣流標問題。檢察機關可視情節彈性處理，不再受限單一程序。
+                        解決大型船舶保管困難、欠缺船籍資料致拍賣流標問題。檢察機關可視情節彈性處理。
                     </p>
-                    <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100 z-10">
-                        <span class="text-xs font-bold text-emerald-600 uppercase">處置方式</span>
-                        <p class="text-sm font-medium text-emerald-900 mt-1">拍賣、變賣、留供公用、<br>廢棄或公益處置</p>
+                    <div class="mt-auto z-10">
+                        <span class="citation-badge">目的：解決執行實務困境</span>
+                        <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100 mt-2">
+                            <span class="text-xs font-bold text-emerald-600 uppercase">處置方式</span>
+                            <p class="text-sm font-medium text-emerald-900 mt-1">拍賣、變賣、留供公用、<br>廢棄或公益處置</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -217,13 +204,14 @@
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h3 class="text-2xl font-bold text-slate-800">提案攻防焦點研析</h3>
-                    <p class="text-slate-500 mt-2 text-sm">點擊下方篩選器，查看立法委員提案與交通部回應的詳細對照。</p>
+                    <p class="text-slate-500 mt-2 text-sm">彙整各立法委員提案與交通部（行政院）之法律觀點攻防。</p>
                 </div>
                 <!-- Filter Buttons -->
                 <div class="flex flex-wrap gap-2" id="filter-container">
                     <button onclick="filterContent('all')" class="filter-btn active-filter px-4 py-2 rounded-lg text-sm font-bold border">全部</button>
+                    <button onclick="filterContent('liability')" class="filter-btn inactive-filter px-4 py-2 rounded-lg text-sm font-medium border">民事責任</button>
                     <button onclick="filterContent('money')" class="filter-btn inactive-filter px-4 py-2 rounded-lg text-sm font-medium border">罰則與收益</button>
-                    <button onclick="filterContent('liability')" class="filter-btn inactive-filter px-4 py-2 rounded-lg text-sm font-medium border">責任與管轄</button>
+                    <button onclick="filterContent('scope')" class="filter-btn inactive-filter px-4 py-2 rounded-lg text-sm font-medium border">管轄與免責</button>
                     <button onclick="filterContent('other')" class="filter-btn inactive-filter px-4 py-2 rounded-lg text-sm font-medium border">其他議題</button>
                 </div>
             </div>
@@ -235,7 +223,7 @@
                     <div class="chart-container">
                         <canvas id="analysisChart"></canvas>
                     </div>
-                    <p class="text-xs text-center text-slate-400 mt-4">圖表顯示各類別提案的數量佔比</p>
+                    <p class="text-xs text-center text-slate-400 mt-4">顯示各類別提案的數量佔比</p>
                 </div>
 
                 <!-- Cards Container -->
@@ -249,7 +237,7 @@
         <section id="qa" class="max-w-4xl mx-auto space-y-6">
             <div class="text-center mb-8">
                 <h3 class="text-2xl font-bold text-slate-800">關鍵 QA 懶人包</h3>
-                <p class="text-slate-500 mt-2">針對修法過程中的常見疑問，交通部之核心回應整理。</p>
+                <p class="text-slate-500 mt-2">針對修法過程中的常見疑問，彙整交通部書面報告與研析意見。</p>
             </div>
 
             <div class="space-y-3" id="qa-container">
@@ -261,7 +249,7 @@
         <section id="process" class="space-y-8 pt-8 border-t border-slate-200">
             <div class="text-center">
                 <h3 class="text-2xl font-bold text-slate-800">沒收物處置新流程</h3>
-                <p class="text-slate-500 mt-2">新法賦予執法機關更大的彈性，解決大型船舶保管不易的問題</p>
+                <p class="text-slate-500 mt-2">授權地檢署、高檢署依個案專案報准，解決大型船舶保管不易問題</p>
             </div>
 
             <div class="relative py-10 hidden md:block">
@@ -280,7 +268,7 @@
                     <div class="flex flex-col items-center">
                         <div class="w-16 h-16 bg-white border-4 border-amber-200 text-amber-500 rounded-full flex items-center justify-center text-2xl font-bold shadow-sm mb-4 z-20">2</div>
                         <h4 class="font-bold text-slate-800">裁判沒收</h4>
-                        <p class="text-xs text-center text-slate-500 mt-2 max-w-[120px]">不問屬於行為人與否<br>一律沒收</p>
+                        <p class="text-xs text-center text-slate-500 mt-2 max-w-[120px]">不問屬於行為人與否<br>工具/船舶一律沒收</p>
                     </div>
 
                     <!-- Step 3 -->
@@ -354,46 +342,46 @@
     <!-- JavaScript Logic -->
     <script>
         // Data Store: Proposals
-        // Categories: money (罰則/收益), liability (責任/管轄), other (其他)
+        // Enhanced with specific legal citations and reasons from the provided PDFs
         const conflictData = [
+            {
+                id: 'liability',
+                title: '明定民事責任',
+                proposer: '邱鎮軍、羅廷瑋等委員',
+                detail: '增訂「自負民事責任」或「連帶負民事責任」。',
+                response: '無須疊床架屋。依《民法》已可請求損害賠償。<br><br><b>實務案例：</b>2021年海巡署查獲<b>獅子山共和國籍油輪</b>損壞海纜，當時雖《電信管理法》尚未有刑責，但中華電信仍成功透過民事訴訟獲賠。',
+                status: 'pass'
+            },
             {
                 id: 'money',
                 title: '大幅提高罰金上限',
                 proposer: '羅美玲等委員',
                 detail: '建議致死者最高罰1.5億元，以生嚇阻效力。',
-                response: '行政院版刑度經跨部會討論，需維持與《電信管理法》等法規的一致性與衡平性，避免失衡。',
-                status: 'pass' // pass = maintain exec version
+                response: '行政院版刑度經行政院邀集跨部會討論訂定，需確保與各部會管理法規（如《電信管理法》）的一致性與衡平性，避免單一法規刑度失衡。',
+                status: 'pass'
             },
             {
                 id: 'money',
                 title: '沒收犯罪航次全部收益',
                 proposer: '黃捷等委員',
                 detail: '建議沒收包含漁獲、盜砂等不法利益。',
-                response: '當次收益難以確認且對象非本國人執行困難。《刑法》已有沒收犯罪所得規定，不需重複。',
+                response: '1. 當次船舶收益數額難以確認。<br>2. 收益對象未必是本國人，執行困難。<br>3. 《刑法》已有沒收犯罪所得規定，不需重複立法。',
                 status: 'pass'
             },
             {
-                id: 'liability',
-                title: '明定民事責任',
-                proposer: '邱鎮軍、羅廷瑋等委員',
-                detail: '增訂「自負民事責任」或「連帶負民事責任」。',
-                response: '《民法》已可請求損害賠償。實務上已有透過民事訴訟獲賠案例（如獅子山籍油輪案）。',
-                status: 'pass'
-            },
-            {
-                id: 'liability',
+                id: 'scope',
                 title: '增訂域外管轄',
                 proposer: '邱鎮軍委員',
                 detail: '增訂「中華民國領域外」適用規定。',
-                response: '海纜受損結果在境內，屬《刑法》第4條「隔地犯」，我國本有管轄權，不需增訂。',
+                response: '海纜受損結果發生在中華民國境內，依<b>《刑法》第4條「隔地犯」</b>規定，只要犯罪之行為或結果有一在中華民國領域內者，即視為在領域內犯罪，我國本有管轄權。',
                 status: 'pass'
             },
             {
-                id: 'liability',
+                id: 'scope',
                 title: '緊急避難免責',
                 proposer: '邱鎮軍委員',
                 detail: '增訂緊急避難、國防安全等免責條款。',
-                response: '《刑法》第24條已有針對緊急避難之免責規定，無須重複立法。',
+                response: '<b>《刑法》第24條</b>已有針對因避免自己或他人生命、身體、自由、財產之緊急危難而出於不得已之行為的免責規定，無須重複立法。',
                 status: 'pass'
             },
             {
@@ -401,56 +389,57 @@
                 title: '淨零排放/兒少指標',
                 proposer: '張雅琳等委員',
                 detail: '納入「淨零排放」或「兒少氣候風險指標」。',
-                response: '與氣象法立法目的不同，且《氣候變遷因應法》已有規範。',
-                status: 'reject' // reject = do not adopt
+                response: '與氣象法立法目的不同，且《氣候變遷因應法》已有規範。兒少健康屬衛福專業。<br><span class="text-xs text-slate-500">*註：惟交通部同意委員於第2條將「高溫」納入災害性天氣定義。</span>',
+                status: 'reject'
             },
             {
                 id: 'other',
                 title: '拍賣廠商資格限制',
                 proposer: '邱鎮軍委員',
                 detail: '拍賣應設定資格限制，防止原船東買回。',
-                response: '《強制執行法》第64條已規定拍賣公告可載明資格條件，無須另訂。',
+                response: '依<b>《強制執行法》第64條</b>，拍賣動產公告本即可載明應買人之資格或條件，無須於本法另行規定。',
                 status: 'pass'
             }
         ];
 
         // Data Store: Q&A
+        // Enhanced with specific details found in the files
         const qaData = [
             {
                 q: "為什麼要處罰「過失」毀壞海纜的行為？",
-                a: "海纜圖資已在國家海洋資料庫公開，航行者應可預知並避免碰撞。此規定比照《電信管理法》規範，強化保護。"
+                a: "海底纜線（管道）等圖資已於<b>海洋委員會國家海洋資料庫及共享平台</b>公開，從事海域航行或相關工作者應可預先知悉。比照《電信管理法》規定增訂過失犯，以強化法規保護範疇。"
             },
             {
                 q: "為什麼不大幅提高罰金（如1.5億）？",
-                a: "行政院版刑度經跨部會討論，需確保與其他法規（如《電信管理法》）的一致性與衡平性。"
+                a: "行政院版刑度係經行政院邀集跨部會共同討論修法原則、模式及架構而訂定，為確保各部會管理法規（如《電信管理法》）之一致性，建議維持院版。"
             },
             {
                 q: "為何不明定「民事責任」？",
-                a: "《民法》已可請求損害賠償，無須疊床架屋。實務上已有成功獲賠案例。"
+                a: "無須疊床架屋。依《民法》已可請求損害賠償。<b>實務案例：</b>2021年海巡署查獲<b>獅子山共和國籍油輪</b>損壞我國海底電纜，當時雖無刑責，但中華電信已成功透過民事訴訟獲得賠償。"
             },
             {
-                q: "公海破壞海纜有管轄權嗎？",
-                a: "有。雖然行為在境外，但結果發生在境內，依《刑法》第4條「隔地犯」規定，我國擁有管轄權。"
+                q: "針對公海（非領海）破壞海纜，台灣有管轄權嗎？",
+                a: "有。雖然行為地可能在境外，但海纜無法正常運作的「結果」是發生在中華民國境內。依據<b>《刑法》第4條「隔地犯」</b>規定，我國本來就擁有管轄權，無須另外規範境外管轄。"
             },
             {
                 q: "需要增訂「緊急避難」免責嗎？",
-                a: "不需要。《刑法》第24條已有相關免責規定。"
+                a: "不需要。<b>《刑法》第24條</b>已有針對因避免自己或他人生命、身體、自由、財產之緊急危難而出於不得已之行為的免責規定。"
             },
             {
                 q: "為何「不問屬於犯罪行為人與否」都要沒收？",
-                a: "為了突破權宜輪或借名登記的執法困境，防止行為人利用產權複雜結構規避處罰。"
+                a: "為了突破<b>權宜輪（Flag of Convenience）</b>或借名登記的執法困境。實務上船舶常透過複雜產權結構規避責任，若不一律沒收，難以產生嚇阻效果。"
             },
             {
-                q: "為何不沒收「全部收益」？",
-                a: "執行困難（數額難認、對象難追），且《刑法》已有沒收犯罪所得規定。"
+                q: "為何不沒收「全部收益」（如漁獲、盜砂）？",
+                a: "1. 該航次收益數額難以精確確認。<br>2. 收益對象未必是本國人，追徵執行困難。<br>3. 《刑法》已有沒收犯罪所得規定，避免疊床架屋。"
             },
              {
-                q: "沒收的船賣不掉怎麼辦？",
-                a: "新法建立彈性處置機制：可拍賣、變賣、留供公用、廢棄或作公益處置。"
+                q: "沒收的船如果賣不掉怎麼辦？",
+                a: "新法建立彈性處置機制：除拍賣變賣外，授權檢察機關專案報准後可<b>無償留供公用</b>、<b>廢棄</b>（若無實益）或<b>為其他適當之處置</b>（如公益教學）。"
             },
-             {
-                q: "是否納入「淨零排放」條款？",
-                a: "不予採納。應回歸《氣候變遷因應法》，避免法規目的混淆。"
+            {
+                q: "拍賣時可否限制廠商資格（防止原船東買回）？",
+                a: "依<b>《強制執行法》第64條</b>，拍賣動產公告本即可載明應買人之資格或條件，無須於本法另行規定。"
             }
         ];
 
@@ -465,19 +454,21 @@
         function renderChart() {
             const ctx = document.getElementById('analysisChart').getContext('2d');
             
-            // Count categories
-            const counts = { money: 0, liability: 0, other: 0 };
+            const counts = { money: 0, liability: 0, scope: 0, other: 0 };
             conflictData.forEach(item => {
-                if(counts[item.id] !== undefined) counts[item.id]++;
+                if(item.id === 'money') counts.money++;
+                else if(item.id === 'liability') counts.liability++;
+                else if(item.id === 'scope') counts.scope++;
+                else counts.other++;
             });
 
             new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['罰則與收益', '責任與管轄', '其他議題'],
+                    labels: ['罰則與收益', '責任', '管轄與免責', '其他議題'],
                     datasets: [{
-                        data: [counts.money, counts.liability, counts.other],
-                        backgroundColor: ['#F59E0B', '#0EA5E9', '#94A3B8'],
+                        data: [counts.money, counts.liability, counts.scope, counts.other],
+                        backgroundColor: ['#F59E0B', '#0EA5E9', '#3B82F6', '#94A3B8'],
                         borderWidth: 0,
                         hoverOffset: 10
                     }]
@@ -495,7 +486,7 @@
                     },
                     onClick: (e, elements) => {
                         if (elements.length > 0) {
-                            const map = ['money', 'liability', 'other'];
+                            const map = ['money', 'liability', 'scope', 'other'];
                             filterContent(map[elements[0].index]);
                         } else {
                             filterContent('all');
@@ -507,7 +498,6 @@
 
         // Filter Logic
         function filterContent(category) {
-            // Update Buttons
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 const onclick = btn.getAttribute('onclick');
                 if(onclick.includes(`'${category}'`)) {
@@ -519,7 +509,6 @@
                 }
             });
 
-            // Update Cards
             const container = document.getElementById('cards-container');
             container.innerHTML = '';
             
@@ -531,7 +520,10 @@
                     ? `<span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded-full font-bold">維持院版</span>`
                     : `<span class="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded-full font-bold">不予採納</span>`;
                 
-                const borderClass = item.id === 'money' ? 'border-l-amber-500' : (item.id === 'liability' ? 'border-l-sky-500' : 'border-l-slate-400');
+                let borderClass = 'border-l-slate-400';
+                if (item.id === 'money') borderClass = 'border-l-amber-500';
+                else if (item.id === 'liability') borderClass = 'border-l-sky-500';
+                else if (item.id === 'scope') borderClass = 'border-l-blue-500';
 
                 const card = document.createElement('div');
                 card.className = `bg-white p-5 rounded-xl border border-slate-200 border-l-4 ${borderClass} shadow-sm hover:shadow-md transition-shadow`;
@@ -550,7 +542,7 @@
                         </div>
                         <div class="bg-slate-50 p-3 rounded-lg">
                             <p class="text-xs font-bold text-sky-600 mb-1">交通部回應</p>
-                            <p class="text-sm text-slate-600">${item.response}</p>
+                            <p class="text-sm text-slate-600 leading-relaxed">${item.response}</p>
                         </div>
                     </div>
                 `;
@@ -567,11 +559,11 @@
                 div.className = 'border border-slate-200 rounded-lg bg-white overflow-hidden';
                 div.innerHTML = `
                     <button class="accordion-btn w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors" onclick="toggleAccordion(${index})" aria-expanded="false">
-                        <span class="font-bold text-slate-800 pr-4"><span class="text-sky-500 mr-2">Q${index+1}</span>${item.q}</span>
-                        <span class="accordion-icon text-slate-400">▼</span>
+                        <span class="font-bold text-slate-800 pr-4 flex-1"><span class="text-sky-500 mr-2">Q${index+1}</span>${item.q}</span>
+                        <span class="accordion-icon text-slate-400 flex-shrink-0">▼</span>
                     </button>
                     <div id="qa-content-${index}" class="accordion-content bg-slate-50">
-                        <div class="px-6 py-4 text-sm text-slate-600 border-t border-slate-100">
+                        <div class="px-6 py-4 text-sm text-slate-600 border-t border-slate-100 leading-relaxed">
                             ${item.a}
                         </div>
                     </div>
@@ -585,7 +577,6 @@
             const btn = content.previousElementSibling;
             const isOpen = content.classList.contains('open');
             
-            // Close all others (optional, but cleaner)
             document.querySelectorAll('.accordion-content').forEach(el => {
                 el.classList.remove('open');
                 el.previousElementSibling.setAttribute('aria-expanded', 'false');
