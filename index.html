@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>氣象法第21條之一修正草案 互動研析報告</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Chosen Palette: "Ocean Security & Legal Clarity"
+           Background: #F8FAFC (Cool Grey/White)
+           Primary Text: #1E293B (Slate 800)
+           Accent 1 (Core/Ocean): #0EA5E9 (Sky 500) - For main headers and core concepts
+           Accent 2 (Alert/Conflict): #F59E0B (Amber 500) - For legislative conflicts/alerts
+           Accent 3 (Safe/Pass): #10B981 (Emerald 500) - For resolutions and consensus
+           Neutral: #94A3B8 (Slate 400) - For secondary text
+        */
+        body {
+            background-color: #F8FAFC;
+            color: #1E293B;
+            font-family: 'Noto Sans TC', system-ui, -apple-system, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Chart Container Styling - Mandatory Requirements */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Base height */
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .filter-btn {
+            transition: all 0.2s;
+        }
+        .active-filter {
+            background-color: #0EA5E9;
+            color: white;
+            border-color: #0EA5E9;
+            box-shadow: 0 4px 6px -1px rgba(14, 165, 233, 0.3);
+        }
+        .inactive-filter {
+            background-color: white;
+            color: #64748B;
+            border-color: #E2E8F0;
+        }
+        .inactive-filter:hover {
+            background-color: #F0F9FF;
+            color: #0284C7;
+            border-color: #BAE6FD;
+        }
+
+        /* Accordion Styling */
+        .accordion-content {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+        }
+        .accordion-content.open {
+            max-height: 500px; /* Arbitrary large height */
+            opacity: 1;
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease;
+        }
+        .accordion-btn[aria-expanded="true"] .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Process Flow styling */
+        .step-circle {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 10;
+        }
+        .step-line {
+            position: absolute;
+            top: 1.75rem;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #E2E8F0;
+            z-index: 0;
+        }
+    </style>
+    <!-- Application Structure Plan:
+         1. Header: Title and Quick Nav.
+         2. Context Hero: Briefly explains the "Why" (Cable damage affecting earthquake warnings).
+         3. Core Amendments (The "What"): 3 Cards explaining Negligence, Confiscation, Disposal.
+         4. Interactive Conflict Analysis (The "Debate"):
+            - Visual: Doughnut Chart showing the distribution of Legislator concerns.
+            - Interaction: Filter buttons to show specific cards (Penalty, Jurisdiction, etc.).
+            - Content: Comparison of Legislator Proposal vs. MOTC Response.
+         5. Q&A Accordion (The "Details"): A dedicated section for the 9 specific QA points from the report.
+         6. Process Visualization (The "How"): HTML Flowchart for the Confiscation mechanism.
+         7. Footer.
+    -->
+    <!-- Visualization & Content Choices:
+         - Chart.js for Proposal Categories: Helps users see where the main friction points are in the legislation.
+         - Cards for Amendments: Clean, digestible chunks of legal text.
+         - Accordion for Q&A: Efficiently packs detailed Q&A content without cluttering the page.
+         - HTML Flowchart: Visualizes the complex "Confiscation -> Disposal" administrative process.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm/50 backdrop-blur-sm bg-white/90">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-2xl">📡</span>
+                <h1 class="text-lg sm:text-xl font-bold tracking-tight text-slate-800">
+                    氣象法修正案 <span class="text-sky-500">互動研析</span>
+                </h1>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-600">
+                <a href="#core" class="hover:text-sky-600 transition">修法核心</a>
+                <a href="#analysis" class="hover:text-sky-600 transition">提案攻防</a>
+                <a href="#qa" class="hover:text-sky-600 transition">關鍵 QA</a>
+                <a href="#process" class="hover:text-sky-600 transition">處置流程</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow p-4 sm:p-8 space-y-16 max-w-7xl mx-auto w-full">
+
+        <!-- Hero Section -->
+        <section class="text-center max-w-4xl mx-auto pt-4">
+            <div class="inline-block bg-sky-50 text-sky-700 text-xs font-bold px-3 py-1 rounded-full mb-4 border border-sky-100">
+                關鍵基礎設施防護
+            </div>
+            <h2 class="text-3xl sm:text-5xl font-extrabold text-slate-900 mb-6 tracking-tight">
+                守護深海神經網絡
+            </h2>
+            <p class="text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
+                針對近年違法抽砂船與權宜輪頻繁損壞海纜，嚴重影響<strong>地震與海嘯預警</strong>時效。<br>
+                本次修法建立「過失刑責」與「絕對沒收」機制，填補法律漏洞。
+            </p>
+        </section>
+
+        <!-- Section 1: Core Amendments (Executive Yuan Version) -->
+        <section id="core" class="space-y-8">
+            <div class="flex items-center gap-4 mb-2">
+                <div class="h-8 w-1 bg-sky-500 rounded-full"></div>
+                <h3 class="text-2xl font-bold text-slate-800">行政院版修法三大核心</h3>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 card-hover flex flex-col relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">⚠️</div>
+                    <h4 class="text-lg font-bold text-slate-800 mb-2 z-10">1. 新增過失罰則</h4>
+                    <p class="text-sm text-slate-500 mb-4 flex-grow z-10">
+                        海纜圖資已公開，航行者有義務預知。針對非故意但造成損害的「過失」行為增訂刑責。
+                    </p>
+                    <div class="bg-sky-50 p-3 rounded-xl border border-sky-100 z-10">
+                        <span class="text-xs font-bold text-sky-600 uppercase">罰則內容</span>
+                        <p class="text-sm font-medium text-sky-900 mt-1">6月以下有期徒刑、拘役<br>或科 200 萬元以下罰金</p>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 card-hover flex flex-col relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">🚢</div>
+                    <h4 class="text-lg font-bold text-slate-800 mb-2 z-10">2. 絕對沒收條款</h4>
+                    <p class="text-sm text-slate-500 mb-4 flex-grow z-10">
+                        破解「權宜輪」或借名登記困境。只要是供犯罪使用之工具，不論船主是誰，一律沒收。
+                    </p>
+                    <div class="bg-amber-50 p-3 rounded-xl border border-amber-100 z-10">
+                        <span class="text-xs font-bold text-amber-600 uppercase">關鍵條文</span>
+                        <p class="text-sm font-medium text-amber-900 mt-1">「不問屬於犯罪行為人與否」<br>均沒收之</p>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 card-hover flex flex-col relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 text-6xl">🔨</div>
+                    <h4 class="text-lg font-bold text-slate-800 mb-2 z-10">3. 彈性處置機制</h4>
+                    <p class="text-sm text-slate-500 mb-4 flex-grow z-10">
+                        解決大型船舶保管困難或拍賣流標問題。檢察機關可視情節彈性處理，不再受限單一程序。
+                    </p>
+                    <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100 z-10">
+                        <span class="text-xs font-bold text-emerald-600 uppercase">處置方式</span>
+                        <p class="text-sm font-medium text-emerald-900 mt-1">拍賣、變賣、留供公用、<br>廢棄或公益處置</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Interactive Proposal Analysis -->
+        <section id="analysis" class="space-y-8 bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-slate-200">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800">提案攻防焦點研析</h3>
+                    <p class="text-slate-500 mt-2 text-sm">點擊下方篩選器，查看立法委員提案與交通部回應的詳細對照。</p>
+                </div>
+                <!-- Filter Buttons -->
+                <div class="flex flex-wrap gap-2" id="filter-container">
+                    <button onclick="filterContent('all')" class="filter-btn active-filter px-4 py-2 rounded-lg text-sm font-bold border">全部</button>
+                    <button onclick="filterContent('money')" class="filter-btn inactive-filter px-4 py-2 rounded-lg text-sm font-medium border">罰則與收益</button>
+                    <button onclick="filterContent('liability')" class="filter-btn inactive-filter px-4 py-2 rounded-lg text-sm font-medium border">責任與管轄</button>
+                    <button onclick="filterContent('other')" class="filter-btn inactive-filter px-4 py-2 rounded-lg text-sm font-medium border">其他議題</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <!-- Chart -->
+                <div class="lg:col-span-1 bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                    <h4 class="text-sm font-bold text-slate-500 uppercase mb-4 text-center">爭議議題分佈</h4>
+                    <div class="chart-container">
+                        <canvas id="analysisChart"></canvas>
+                    </div>
+                    <p class="text-xs text-center text-slate-400 mt-4">圖表顯示各類別提案的數量佔比</p>
+                </div>
+
+                <!-- Cards Container -->
+                <div class="lg:col-span-2 space-y-4" id="cards-container">
+                    <!-- Cards injected via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Q&A Accordion -->
+        <section id="qa" class="max-w-4xl mx-auto space-y-6">
+            <div class="text-center mb-8">
+                <h3 class="text-2xl font-bold text-slate-800">關鍵 QA 懶人包</h3>
+                <p class="text-slate-500 mt-2">針對修法過程中的常見疑問，交通部之核心回應整理。</p>
+            </div>
+
+            <div class="space-y-3" id="qa-container">
+                <!-- QA Items will be injected by JS for cleaner code -->
+            </div>
+        </section>
+
+        <!-- Section 4: Confiscation Process Flow -->
+        <section id="process" class="space-y-8 pt-8 border-t border-slate-200">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold text-slate-800">沒收物處置新流程</h3>
+                <p class="text-slate-500 mt-2">新法賦予執法機關更大的彈性，解決大型船舶保管不易的問題</p>
+            </div>
+
+            <div class="relative py-10 hidden md:block">
+                <!-- Connecting Line -->
+                <div class="step-line top-1/2 left-0 w-full transform -translate-y-1/2"></div>
+                
+                <div class="grid grid-cols-4 gap-4 relative z-10">
+                    <!-- Step 1 -->
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 bg-white border-4 border-red-200 text-red-500 rounded-full flex items-center justify-center text-2xl font-bold shadow-sm mb-4 z-20">1</div>
+                        <h4 class="font-bold text-slate-800">查獲違法</h4>
+                        <p class="text-xs text-center text-slate-500 mt-2 max-w-[120px]">故意或過失損壞<br>氣象觀測設施</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 bg-white border-4 border-amber-200 text-amber-500 rounded-full flex items-center justify-center text-2xl font-bold shadow-sm mb-4 z-20">2</div>
+                        <h4 class="font-bold text-slate-800">裁判沒收</h4>
+                        <p class="text-xs text-center text-slate-500 mt-2 max-w-[120px]">不問屬於行為人與否<br>一律沒收</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 bg-white border-4 border-sky-200 text-sky-500 rounded-full flex items-center justify-center text-2xl font-bold shadow-sm mb-4 z-20">3</div>
+                        <h4 class="font-bold text-slate-800">專案評估</h4>
+                        <p class="text-xs text-center text-slate-500 mt-2 max-w-[120px]">檢察機關評估<br>保管成本與價值</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 bg-white border-4 border-emerald-200 text-emerald-500 rounded-full flex items-center justify-center text-2xl font-bold shadow-sm mb-4 z-20">4</div>
+                        <h4 class="font-bold text-slate-800">多元處置</h4>
+                        <div class="flex flex-wrap justify-center gap-1 mt-2 max-w-[160px]">
+                            <span class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-100">拍賣</span>
+                            <span class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-100">公用</span>
+                            <span class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-100">廢棄</span>
+                            <span class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded border border-emerald-100">公益</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Flow -->
+            <div class="md:hidden space-y-4 pl-4 border-l-2 border-slate-200 ml-4">
+                <div class="relative pl-6">
+                    <div class="absolute -left-[21px] top-0 w-10 h-10 bg-white border-4 border-red-200 text-red-500 rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                    <h4 class="font-bold text-slate-800">查獲違法</h4>
+                    <p class="text-sm text-slate-500">故意或過失損壞設施</p>
+                </div>
+                <div class="relative pl-6 pt-4">
+                    <div class="absolute -left-[21px] top-4 w-10 h-10 bg-white border-4 border-amber-200 text-amber-500 rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                    <h4 class="font-bold text-slate-800">裁判沒收</h4>
+                    <p class="text-sm text-slate-500">不問屬於行為人與否</p>
+                </div>
+                <div class="relative pl-6 pt-4">
+                    <div class="absolute -left-[21px] top-4 w-10 h-10 bg-white border-4 border-sky-200 text-sky-500 rounded-full flex items-center justify-center font-bold text-sm">3</div>
+                    <h4 class="font-bold text-slate-800">專案評估</h4>
+                    <p class="text-sm text-slate-500">評估保管成本與價值</p>
+                </div>
+                <div class="relative pl-6 pt-4">
+                    <div class="absolute -left-[21px] top-4 w-10 h-10 bg-white border-4 border-emerald-200 text-emerald-500 rounded-full flex items-center justify-center font-bold text-sm">4</div>
+                    <h4 class="font-bold text-slate-800">多元處置</h4>
+                    <p class="text-sm text-slate-500">拍賣、公用、廢棄或公益</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusion -->
+        <section class="bg-slate-800 text-white rounded-3xl p-8 sm:p-12 text-center mt-8 shadow-xl">
+            <h3 class="text-xl sm:text-2xl font-bold mb-4">研析結論</h3>
+            <p class="max-w-3xl mx-auto text-slate-300 leading-relaxed mb-8">
+                綜合研析，多數委員提案內容與行政院版本精神一致。交通部建議<strong>維持行政院版本</strong>，
+                因其已考量跨部會法規一致性（如與《電信管理法》衡平），且現行民刑法體系已涵蓋責任追究與管轄權問題。
+            </p>
+            <div class="inline-flex items-center bg-emerald-500 text-white px-8 py-4 rounded-full font-bold shadow-lg shadow-emerald-500/30 hover:bg-emerald-600 transition cursor-default">
+                <span class="mr-2">✓</span> 建議通過：行政院版本
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 mt-12 py-10">
+        <div class="max-w-7xl mx-auto px-4 text-center text-slate-400 text-sm">
+            <p class="font-medium">資料來源</p>
+            <p class="mt-1">交通部書面報告、立法院法制局評估報告、氣象法第21條之1修正草案研析意見</p>
+            <p class="mt-4 text-xs opacity-70">Generated for Legislative Analysis</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Data Store: Proposals
+        // Categories: money (罰則/收益), liability (責任/管轄), other (其他)
+        const conflictData = [
+            {
+                id: 'money',
+                title: '大幅提高罰金上限',
+                proposer: '羅美玲等委員',
+                detail: '建議致死者最高罰1.5億元，以生嚇阻效力。',
+                response: '行政院版刑度經跨部會討論，需維持與《電信管理法》等法規的一致性與衡平性，避免失衡。',
+                status: 'pass' // pass = maintain exec version
+            },
+            {
+                id: 'money',
+                title: '沒收犯罪航次全部收益',
+                proposer: '黃捷等委員',
+                detail: '建議沒收包含漁獲、盜砂等不法利益。',
+                response: '當次收益難以確認且對象非本國人執行困難。《刑法》已有沒收犯罪所得規定，不需重複。',
+                status: 'pass'
+            },
+            {
+                id: 'liability',
+                title: '明定民事責任',
+                proposer: '邱鎮軍、羅廷瑋等委員',
+                detail: '增訂「自負民事責任」或「連帶負民事責任」。',
+                response: '《民法》已可請求損害賠償。實務上已有透過民事訴訟獲賠案例（如獅子山籍油輪案）。',
+                status: 'pass'
+            },
+            {
+                id: 'liability',
+                title: '增訂域外管轄',
+                proposer: '邱鎮軍委員',
+                detail: '增訂「中華民國領域外」適用規定。',
+                response: '海纜受損結果在境內，屬《刑法》第4條「隔地犯」，我國本有管轄權，不需增訂。',
+                status: 'pass'
+            },
+            {
+                id: 'liability',
+                title: '緊急避難免責',
+                proposer: '邱鎮軍委員',
+                detail: '增訂緊急避難、國防安全等免責條款。',
+                response: '《刑法》第24條已有針對緊急避難之免責規定，無須重複立法。',
+                status: 'pass'
+            },
+            {
+                id: 'other',
+                title: '淨零排放/兒少指標',
+                proposer: '張雅琳等委員',
+                detail: '納入「淨零排放」或「兒少氣候風險指標」。',
+                response: '與氣象法立法目的不同，且《氣候變遷因應法》已有規範。',
+                status: 'reject' // reject = do not adopt
+            },
+            {
+                id: 'other',
+                title: '拍賣廠商資格限制',
+                proposer: '邱鎮軍委員',
+                detail: '拍賣應設定資格限制，防止原船東買回。',
+                response: '《強制執行法》第64條已規定拍賣公告可載明資格條件，無須另訂。',
+                status: 'pass'
+            }
+        ];
+
+        // Data Store: Q&A
+        const qaData = [
+            {
+                q: "為什麼要處罰「過失」毀壞海纜的行為？",
+                a: "海纜圖資已在國家海洋資料庫公開，航行者應可預知並避免碰撞。此規定比照《電信管理法》規範，強化保護。"
+            },
+            {
+                q: "為什麼不大幅提高罰金（如1.5億）？",
+                a: "行政院版刑度經跨部會討論，需確保與其他法規（如《電信管理法》）的一致性與衡平性。"
+            },
+            {
+                q: "為何不明定「民事責任」？",
+                a: "《民法》已可請求損害賠償，無須疊床架屋。實務上已有成功獲賠案例。"
+            },
+            {
+                q: "公海破壞海纜有管轄權嗎？",
+                a: "有。雖然行為在境外，但結果發生在境內，依《刑法》第4條「隔地犯」規定，我國擁有管轄權。"
+            },
+            {
+                q: "需要增訂「緊急避難」免責嗎？",
+                a: "不需要。《刑法》第24條已有相關免責規定。"
+            },
+            {
+                q: "為何「不問屬於犯罪行為人與否」都要沒收？",
+                a: "為了突破權宜輪或借名登記的執法困境，防止行為人利用產權複雜結構規避處罰。"
+            },
+            {
+                q: "為何不沒收「全部收益」？",
+                a: "執行困難（數額難認、對象難追），且《刑法》已有沒收犯罪所得規定。"
+            },
+             {
+                q: "沒收的船賣不掉怎麼辦？",
+                a: "新法建立彈性處置機制：可拍賣、變賣、留供公用、廢棄或作公益處置。"
+            },
+             {
+                q: "是否納入「淨零排放」條款？",
+                a: "不予採納。應回歸《氣候變遷因應法》，避免法規目的混淆。"
+            }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderChart();
+            filterContent('all');
+            renderQA();
+        });
+
+        // Chart Rendering
+        function renderChart() {
+            const ctx = document.getElementById('analysisChart').getContext('2d');
+            
+            // Count categories
+            const counts = { money: 0, liability: 0, other: 0 };
+            conflictData.forEach(item => {
+                if(counts[item.id] !== undefined) counts[item.id]++;
+            });
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['罰則與收益', '責任與管轄', '其他議題'],
+                    datasets: [{
+                        data: [counts.money, counts.liability, counts.other],
+                        backgroundColor: ['#F59E0B', '#0EA5E9', '#94A3B8'],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { usePointStyle: true, padding: 20 } },
+                        tooltip: { 
+                            callbacks: {
+                                label: (ctx) => ` ${ctx.label}: ${ctx.raw} 項提案`
+                            }
+                        }
+                    },
+                    onClick: (e, elements) => {
+                        if (elements.length > 0) {
+                            const map = ['money', 'liability', 'other'];
+                            filterContent(map[elements[0].index]);
+                        } else {
+                            filterContent('all');
+                        }
+                    }
+                }
+            });
+        }
+
+        // Filter Logic
+        function filterContent(category) {
+            // Update Buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                const onclick = btn.getAttribute('onclick');
+                if(onclick.includes(`'${category}'`)) {
+                    btn.classList.remove('inactive-filter');
+                    btn.classList.add('active-filter');
+                } else {
+                    btn.classList.add('inactive-filter');
+                    btn.classList.remove('active-filter');
+                }
+            });
+
+            // Update Cards
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+            
+            const filtered = category === 'all' ? conflictData : conflictData.filter(d => d.id === category);
+
+            filtered.forEach(item => {
+                const isPass = item.status === 'pass';
+                const statusBadge = isPass 
+                    ? `<span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded-full font-bold">維持院版</span>`
+                    : `<span class="bg-slate-100 text-slate-600 text-xs px-2 py-1 rounded-full font-bold">不予採納</span>`;
+                
+                const borderClass = item.id === 'money' ? 'border-l-amber-500' : (item.id === 'liability' ? 'border-l-sky-500' : 'border-l-slate-400');
+
+                const card = document.createElement('div');
+                card.className = `bg-white p-5 rounded-xl border border-slate-200 border-l-4 ${borderClass} shadow-sm hover:shadow-md transition-shadow`;
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <span class="text-xs text-slate-400 font-bold uppercase">${item.proposer}</span>
+                            <h5 class="text-lg font-bold text-slate-800">${item.title}</h5>
+                        </div>
+                        ${statusBadge}
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-xs font-bold text-slate-500 mb-1">提案主張</p>
+                            <p class="text-sm text-slate-700">${item.detail}</p>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-lg">
+                            <p class="text-xs font-bold text-sky-600 mb-1">交通部回應</p>
+                            <p class="text-sm text-slate-600">${item.response}</p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Q&A Rendering
+        function renderQA() {
+            const container = document.getElementById('qa-container');
+            
+            qaData.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = 'border border-slate-200 rounded-lg bg-white overflow-hidden';
+                div.innerHTML = `
+                    <button class="accordion-btn w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none hover:bg-slate-50 transition-colors" onclick="toggleAccordion(${index})" aria-expanded="false">
+                        <span class="font-bold text-slate-800 pr-4"><span class="text-sky-500 mr-2">Q${index+1}</span>${item.q}</span>
+                        <span class="accordion-icon text-slate-400">▼</span>
+                    </button>
+                    <div id="qa-content-${index}" class="accordion-content bg-slate-50">
+                        <div class="px-6 py-4 text-sm text-slate-600 border-t border-slate-100">
+                            ${item.a}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function toggleAccordion(index) {
+            const content = document.getElementById(`qa-content-${index}`);
+            const btn = content.previousElementSibling;
+            const isOpen = content.classList.contains('open');
+            
+            // Close all others (optional, but cleaner)
+            document.querySelectorAll('.accordion-content').forEach(el => {
+                el.classList.remove('open');
+                el.previousElementSibling.setAttribute('aria-expanded', 'false');
+            });
+
+            if (!isOpen) {
+                content.classList.add('open');
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        }
+    </script>
+</body>
+</html>
